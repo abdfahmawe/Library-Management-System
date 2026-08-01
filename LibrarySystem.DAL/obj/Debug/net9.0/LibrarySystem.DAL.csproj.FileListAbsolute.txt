@@ -1,0 +1,15 @@
+C:\Users\hp\Documents\Dimensions-Training\LibrarySystem\LibrarySystem.DAL\bin\Debug\net9.0\LibrarySystem.DAL.deps.json
+C:\Users\hp\Documents\Dimensions-Training\LibrarySystem\LibrarySystem.DAL\bin\Debug\net9.0\LibrarySystem.DAL.runtimeconfig.json
+C:\Users\hp\Documents\Dimensions-Training\LibrarySystem\LibrarySystem.DAL\bin\Debug\net9.0\LibrarySystem.DAL.dll
+C:\Users\hp\Documents\Dimensions-Training\LibrarySystem\LibrarySystem.DAL\bin\Debug\net9.0\LibrarySystem.DAL.pdb
+C:\Users\hp\Documents\Dimensions-Training\LibrarySystem\LibrarySystem.DAL\obj\Debug\net9.0\LibrarySystem.DAL.csproj.AssemblyReference.cache
+C:\Users\hp\Documents\Dimensions-Training\LibrarySystem\LibrarySystem.DAL\obj\Debug\net9.0\LibrarySystem.DAL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\hp\Documents\Dimensions-Training\LibrarySystem\LibrarySystem.DAL\obj\Debug\net9.0\LibrarySystem.DAL.AssemblyInfoInputs.cache
+C:\Users\hp\Documents\Dimensions-Training\LibrarySystem\LibrarySystem.DAL\obj\Debug\net9.0\LibrarySystem.DAL.AssemblyInfo.cs
+C:\Users\hp\Documents\Dimensions-Training\LibrarySystem\LibrarySystem.DAL\obj\Debug\net9.0\LibrarySystem.DAL.csproj.CoreCompileInputs.cache
+C:\Users\hp\Documents\Dimensions-Training\LibrarySystem\LibrarySystem.DAL\obj\Debug\net9.0\LibrarySystem.DAL.sourcelink.json
+C:\Users\hp\Documents\Dimensions-Training\LibrarySystem\LibrarySystem.DAL\obj\Debug\net9.0\LibrarySystem.DAL.dll
+C:\Users\hp\Documents\Dimensions-Training\LibrarySystem\LibrarySystem.DAL\obj\Debug\net9.0\refint\LibrarySystem.DAL.dll
+C:\Users\hp\Documents\Dimensions-Training\LibrarySystem\LibrarySystem.DAL\obj\Debug\net9.0\LibrarySystem.DAL.pdb
+C:\Users\hp\Documents\Dimensions-Training\LibrarySystem\LibrarySystem.DAL\obj\Debug\net9.0\LibrarySystem.DAL.genruntimeconfig.cache
+C:\Users\hp\Documents\Dimensions-Training\LibrarySystem\LibrarySystem.DAL\obj\Debug\net9.0\ref\LibrarySystem.DAL.dll

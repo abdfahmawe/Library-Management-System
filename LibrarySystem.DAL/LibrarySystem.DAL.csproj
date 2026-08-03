@@ -7,8 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DTOs\Response\" />
-    <Folder Include="DTOs\Requist\" />
     <Folder Include="Repositories\Classes\" />
     <Folder Include="Repositories\Interfaces\" />
   </ItemGroup>

@@ -208,6 +208,10 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "dependencies": {
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[9.0.18, )"
+            },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[9.0.2, )"
@@ -217,6 +221,10 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[9.0.18, )"
+            },
+            "Scalar.AspNetCore": {
+              "target": "Package",
+              "version": "[2.16.17, )"
             }
           },
           "imports": [

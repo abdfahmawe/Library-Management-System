@@ -174,3 +174,6 @@ C:\Users\hp\Documents\Dimensions-Training\LibrarySystem\LibrarySystem.PL\obj\Deb
 C:\Users\hp\Documents\Dimensions-Training\LibrarySystem\LibrarySystem.PL\obj\Debug\net9.0\LibrarySystem.PL.pdb
 C:\Users\hp\Documents\Dimensions-Training\LibrarySystem\LibrarySystem.PL\obj\Debug\net9.0\LibrarySystem.PL.genruntimeconfig.cache
 C:\Users\hp\Documents\Dimensions-Training\LibrarySystem\LibrarySystem.PL\obj\Debug\net9.0\ref\LibrarySystem.PL.dll
+C:\Users\hp\Documents\Dimensions-Training\LibrarySystem\LibrarySystem.PL\bin\Debug\net9.0\Scalar.AspNetCore.dll
+C:\Users\hp\Documents\Dimensions-Training\LibrarySystem\LibrarySystem.PL\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\hp\Documents\Dimensions-Training\LibrarySystem\LibrarySystem.PL\bin\Debug\net9.0\Microsoft.Bcl.Cryptography.dll

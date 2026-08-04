@@ -4,6 +4,8 @@ using LibrarySystem.BLL.Setting;
 using LibrarySystem.DAL.Data;
 using LibrarySystem.DAL.Data.Seed;
 using LibrarySystem.DAL.Models;
+using LibrarySystem.DAL.Repositories.Classes;
+using LibrarySystem.DAL.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -75,10 +77,10 @@ namespace LibrarySystem.PL
                             ClockSkew = TimeSpan.Zero
                         };
                 });
-
+            builder.Services.AddScoped<ILibraryItemRepository, LibraryItemRepository>();
             builder.Services.AddScoped<IDataSeed, DataSeed>();
             builder.Services.AddScoped<IIdentityService, IdentityService>();
-
+            builder.Services.AddScoped<ILibraryItemService, LibraryItemService>();
             builder.Services.AddControllers();
             builder.Services.AddOpenApi();
 

@@ -61,6 +61,7 @@ namespace LibrarySystem.BLL.Services.Classes
                 UserId = existingUser.Id,
                 FullName = existingUser.FullName,
                 Email = existingUser.Email,
+                UserName = existingUser.UserName,
                 Role = roles.FirstOrDefault(),
                 AccessToken = jwt.AccessToken,
                 ExpiresAt = jwt.ExpiresAt
@@ -81,7 +82,17 @@ namespace LibrarySystem.BLL.Services.Classes
                     Message = "Email is already registered."
                 };
             }
+            ApplicationUser? existingUserName =
+                await _userManager.FindByNameAsync(request.UserName);
 
+            if (existingUserName is not null)
+            {
+                return new AuthResponseDto
+                {
+                    IsSuccess = false,
+                    Message = "Username is already taken."
+                };
+            }
             await using var transaction =
                 await _dbContext.Database.BeginTransactionAsync();
 
@@ -91,7 +102,8 @@ namespace LibrarySystem.BLL.Services.Classes
                 {
                     FullName = request.FullName,
                     Email = request.Email,
-                    UserName = request.Email,
+                    UserName = request.UserName,
+                
                     PhoneNumber = request.PhoneNumber
                 };
 
@@ -150,6 +162,7 @@ namespace LibrarySystem.BLL.Services.Classes
                     UserId = user.Id,
                     FullName = user.FullName,
                     Email = user.Email,
+                    UserName = user.UserName,
                     Role = roles.FirstOrDefault(),
                     AccessToken = jwt.AccessToken,
                     ExpiresAt = jwt.ExpiresAt
@@ -170,6 +183,7 @@ namespace LibrarySystem.BLL.Services.Classes
                  new Claim(ClaimTypes.NameIdentifier, user.Id),
                  new Claim(ClaimTypes.Name, user.FullName),
                 new Claim(ClaimTypes.Email, user.Email!),
+                new Claim("username", user.UserName!),
                 new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString())
               };
             foreach (string role in roles)

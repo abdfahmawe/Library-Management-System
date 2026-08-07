@@ -81,6 +81,8 @@ namespace LibrarySystem.PL
             builder.Services.AddScoped<IDataSeed, DataSeed>();
             builder.Services.AddScoped<IIdentityService, IdentityService>();
             builder.Services.AddScoped<ILibraryItemService, LibraryItemService>();
+            builder.Services.AddScoped<IMemberRepository, MemberRepository>();
+            builder.Services.AddScoped<IMemberService, MemberService>();
             builder.Services.AddControllers();
             builder.Services.AddOpenApi();
 

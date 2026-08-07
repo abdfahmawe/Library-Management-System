@@ -66,7 +66,7 @@ namespace LibrarySystem.PL.Areas.Admin.Controllers
         [HttpPut("books/{id}")]
         public async Task<ActionResult<BookResponse>> UpdateBookAsync([FromRoute] string id, [FromBody] UpdateBookRequest updateBookRequest)
         {
-           BookResponse bookResponse = await _libraryItemService.UpdateBookAsync(id,updateBookRequest);
+           BookResponse? bookResponse = await _libraryItemService.UpdateBookAsync(id,updateBookRequest);
             if (bookResponse is null)
             {
                 return NotFound(new
@@ -80,7 +80,7 @@ namespace LibrarySystem.PL.Areas.Admin.Controllers
         [HttpPut("magazines/{id}")]
         public async Task<ActionResult<MagazineResponse>> UpdateMagazineAsync([FromRoute] string id, [FromBody] UpdateMagazineRequest updateMagazineRequest)
         {
-            MagazineResponse magazineResponse = await _libraryItemService.UpdateMagazineAsync(id, updateMagazineRequest);
+            MagazineResponse? magazineResponse = await _libraryItemService.UpdateMagazineAsync(id, updateMagazineRequest);
             if (magazineResponse is null)
             {
                 return NotFound(new
@@ -93,7 +93,7 @@ namespace LibrarySystem.PL.Areas.Admin.Controllers
         [HttpPut("newspapers/{id}")]
         public async Task<ActionResult<NewspaperResponse>> UpdateNewsPaperAsync([FromRoute] string id, [FromBody] UpdateNewspaperRequest updateNewspaperRequest)
         {
-            NewspaperResponse newspaperResponse = await _libraryItemService.UpdateNewsPaperAsync(id, updateNewspaperRequest);
+            NewspaperResponse? newspaperResponse = await _libraryItemService.UpdateNewsPaperAsync(id, updateNewspaperRequest);
             if (newspaperResponse is null)
             {
                 return NotFound(new

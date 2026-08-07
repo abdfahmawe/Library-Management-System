@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LibrarySystem.BLL.DTOs.Request.Identity
+namespace LibrarySystem.BLL.DTOs.Request.Member
 {
-    public class RegisterRequestDto
+    public class UpdateMemberRequest
     {
         [Required]
         [MaxLength(100)]
@@ -22,14 +22,6 @@ namespace LibrarySystem.BLL.DTOs.Request.Identity
         [Phone]
         [MaxLength(20)]
         public string PhoneNumber { get; set; } = null!;
-
-        [Required]
-        [MinLength(6)]
-        public string Password { get; set; } = null!;
-
-        [Required]
-        [Compare(nameof(Password))]
-        public string ConfirmPassword { get; set; } = null!;
 
         [Required]
         [MaxLength(50)]

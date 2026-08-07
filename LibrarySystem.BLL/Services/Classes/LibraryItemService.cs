@@ -52,7 +52,7 @@ namespace LibrarySystem.BLL.Services.Classes
 
         public async Task<DeleteLibraryItemResult> DeleteLibraryItemAsync(string id)
         {
-             LibraryItem libraryItem = await _libraryItemRepository.GetByIdAsync(id);
+             LibraryItem? libraryItem = await _libraryItemRepository.GetByIdAsync(id);
             if (libraryItem is null)
             {
                 return DeleteLibraryItemResult.NotFound;

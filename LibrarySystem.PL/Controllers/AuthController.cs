@@ -1,4 +1,5 @@
 ﻿using LibrarySystem.BLL.DTOs.Request.Identity;
+using LibrarySystem.BLL.DTOs.Response.Identity;
 using LibrarySystem.BLL.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -19,22 +20,26 @@ namespace LibrarySystem.PL.Controllers
             _identityService = identityService;
         }
         [HttpPost("Register")]
-        public async Task<IActionResult> Register([FromBody] RegisterRequestDto register)
+        public async Task<ActionResult<AuthResponseDto>> Register([FromBody] RegisterRequestDto register)
         {
-            var result = await _identityService.RegisterAsync(register);
-            return Ok(new
+            AuthResponseDto result = await _identityService.RegisterAsync(register);
+            if(!result.IsSuccess)
             {
-                Message = result
-            });
+                return BadRequest(result);
+            }
+            return StatusCode(
+                StatusCodes.Status201Created,
+                result);
         }
         [HttpPost("Login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequestDto login)
+        public async Task<ActionResult<AuthResponseDto>> Login([FromBody] LoginRequestDto login)
         {
-            var result = await _identityService.LoginAsync(login);
-            return Ok(new
+            AuthResponseDto result = await _identityService.LoginAsync(login);
+            if (!result.IsSuccess)
             {
-                Message = result
-            });
+                return Unauthorized(result);
+            }
+            return Ok(result);
         }
 
         [HttpGet("test-auth")]

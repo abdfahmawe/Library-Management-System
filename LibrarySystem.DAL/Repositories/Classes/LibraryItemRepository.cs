@@ -50,6 +50,28 @@ namespace LibrarySystem.DAL.Repositories.Classes
             return _dbContext.SaveChangesAsync();
         }
 
+        public async Task<IEnumerable<LibraryItem>> SearchAvailableAsync(string? title, string? author, int? year, string? type)
+        {
+           IQueryable<LibraryItem> query = _dbContext.LibraryItems.Where(item => item.IsAvailable == true);
+            if (!string.IsNullOrEmpty(title))
+            {
+                query = query.Where(item => item.Title.Contains(title));
+            }
+            if (!string.IsNullOrEmpty(author))
+            {
+                query = query.Where(item => item.Author.Contains(author));
+            }
+            if (year.HasValue)
+            {
+                query = query.Where(item => item.YearOfPublication == year.Value);
+            }
+            if (!string.IsNullOrEmpty(type))
+            {
+                query = query.Where(item => EF.Property<string>(item, "LibraryItemType") == type);
+            }
+            return await query.ToListAsync();
+        }
+
         public void Update(LibraryItem libraryItem)
         {
            _dbContext.LibraryItems.Update(libraryItem);

@@ -1,6 +1,8 @@
-﻿using LibrarySystem.BLL.DTOs.Request.LibraryItem.Book;
+﻿using LibrarySystem.BLL.DTOs.Request.Catalog;
+using LibrarySystem.BLL.DTOs.Request.LibraryItem.Book;
 using LibrarySystem.BLL.DTOs.Request.LibraryItem.Magazine;
 using LibrarySystem.BLL.DTOs.Request.LibraryItem.NewsPaper;
+using LibrarySystem.BLL.DTOs.Response.Catalog;
 using LibrarySystem.BLL.DTOs.Response.LibraryItem;
 using LibrarySystem.BLL.DTOs.Response.LibraryItem.Book;
 using LibrarySystem.BLL.DTOs.Response.LibraryItem.Magazine;
@@ -30,6 +32,7 @@ namespace LibrarySystem.BLL.Services.Interfaces
         Task<NewspaperResponse?> UpdateNewsPaperAsync(string id, UpdateNewspaperRequest request);
         // delete book, magazine , newspaper in one function 
         Task<DeleteLibraryItemResult> DeleteLibraryItemAsync(string id);
+
 
     }
 }

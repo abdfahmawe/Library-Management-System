@@ -20,8 +20,4 @@
     <ProjectReference Include="..\LibrarySystem.BLL\LibrarySystem.BLL.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Areas\Member\" />
-  </ItemGroup>
-
 </Project>

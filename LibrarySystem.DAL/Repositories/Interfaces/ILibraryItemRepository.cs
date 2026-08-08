@@ -22,5 +22,11 @@ namespace LibrarySystem.DAL.Repositories.Interfaces
         Task<int> SaveChangesAsync();
 
         Task<bool> HasBorrowTransactionsAsync(string id);
+
+        // for member to do filtering 
+        Task<IEnumerable<LibraryItem>> SearchAvailableAsync(string? title,
+    string? author,
+    int? year,
+    string? type);
     }
 }

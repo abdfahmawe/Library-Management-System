@@ -43,6 +43,12 @@ namespace LibrarySystem.DAL.Repositories.Classes
                 .ToListAsync();
         }
 
+        public async Task<Member?> GetByApplicationUserIdAsync(string applicationUserId)
+        {
+            // use FirstOrDefaultAsync ====> Not Where ===> beacuse we want only one member for one user
+            return await _dbContext.Members.FirstOrDefaultAsync(member => member.ApplicationUserId == applicationUserId);
+        }
+
         public async Task<Member?> GetByIdAsync(string membershipId)
         {
             return await _dbContext.Members.Include(m=>m.ApplicationUser).FirstOrDefaultAsync(m => m.MembershipId == membershipId);

@@ -17,5 +17,8 @@ namespace LibrarySystem.DAL.Repositories.Interfaces
         Task<int> SaveChangesAsync();
         Task<bool> HasBorrowTransactionsAsync(string membershipId);
         Task<IEnumerable<BorrowTransaction>> GetBorrowingsAsync(string membershipId);
+
+        //
+        Task<Member?> GetByApplicationUserIdAsync(string applicationUserId);
     }
 }

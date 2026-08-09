@@ -83,7 +83,9 @@ namespace LibrarySystem.PL
             builder.Services.AddScoped<ILibraryItemService, LibraryItemService>();
             builder.Services.AddScoped<IMemberRepository, MemberRepository>();
             builder.Services.AddScoped<IMemberService, MemberService>();
-            builder.Services.AddScoped<IMemberCatalogService, MemberCatalogService>(); 
+            builder.Services.AddScoped<IMemberCatalogService, MemberCatalogService>();
+            builder.Services.AddScoped<IBorrowTransactionRepository, BorrowTransactionRepository>();
+            builder.Services.AddScoped<IBorrowingService, BorrowingService>();
             builder.Services.AddControllers();
             builder.Services.AddOpenApi();
 

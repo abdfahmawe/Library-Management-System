@@ -50,7 +50,7 @@ namespace LibrarySystem.DAL.Data.Seed
         {
             var email = "abdalrahman.hamdan129@gmail.com";
             var password = "Admin@123";
-            ApplicationUser adminUser = await _userManager.FindByEmailAsync(email);
+            ApplicationUser? adminUser = await _userManager.FindByEmailAsync(email);
             if (adminUser is null)
             {
                 adminUser = new ApplicationUser

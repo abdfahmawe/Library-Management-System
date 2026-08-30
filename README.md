@@ -1,4 +1,3 @@
-[README.md](https://github.com/user-attachments/files/31614301/README.md)
 # 📚 Library Management System
 
 A backend RESTful API for managing library operations, built with **ASP.NET Core 9** and **C#**.

@@ -17,21 +17,27 @@ namespace LibrarySystem.BLL.Services.Classes
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ApplicationDbContext _dbContext;
+        private readonly IEmailSender _emailSender;
+        private readonly EmailSettings _emailSettings;
         private readonly JwtSettings _jwtSettings;
 
         public IdentityService(
      UserManager<ApplicationUser> userManager,
      ApplicationDbContext dbContext,
-     IOptions<JwtSettings> jwtOptions)
+     IOptions<JwtSettings> jwtOptions,
+     IEmailSender emailSender,
+     IOptions<EmailSettings> emailSettings)
         {
             _userManager = userManager;
             _dbContext = dbContext;
+            _emailSender = emailSender;
+            _emailSettings = emailSettings.Value;
             _jwtSettings = jwtOptions.Value;
         }
         public async Task<AuthResponseDto> LoginAsync(LoginRequestDto request)
         {
             ApplicationUser? existingUser = await _userManager.FindByEmailAsync(request.Email);
-            if(existingUser is null)
+            if (existingUser is null)
             {
                 return new AuthResponseDto
                 {
@@ -40,12 +46,20 @@ namespace LibrarySystem.BLL.Services.Classes
                 };
             }
             bool isPasswordRight = await _userManager.CheckPasswordAsync(existingUser, request.Password);
-            if(!isPasswordRight)
+            if (!isPasswordRight)
             {
                 return new AuthResponseDto
                 {
                     IsSuccess = false,
                     Message = "Invalid email or password."
+                };
+            }
+            if (!existingUser.EmailConfirmed)
+            {
+                return new AuthResponseDto
+                {
+                    IsSuccess = false,
+                    Message = "Please confirm your email before logging in.",
                 };
             }
             IList<string> roles =
@@ -103,7 +117,7 @@ namespace LibrarySystem.BLL.Services.Classes
                     FullName = request.FullName,
                     Email = request.Email,
                     UserName = request.UserName,
-                
+
                     PhoneNumber = request.PhoneNumber
                 };
 
@@ -141,31 +155,88 @@ namespace LibrarySystem.BLL.Services.Classes
 
                 Member member = new Member
                 {
-                   
+
                     ApplicationUserId = user.Id
                 };
+                //
+                string tokenForEmail = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                string cofirmationLink = $"{_emailSettings.ConfirmationUrl}/api/Auth/confirm-email" +
+                                         $"?userId={Uri.EscapeDataString(user.Id)}" +
+                                         $"&token={Uri.EscapeDataString(tokenForEmail)}";
+                string emailBody = $@"
+                        <!DOCTYPE html>
+                        <html>
+                        <head>
+                            <meta charset=""UTF-8"">
+                            <title>Confirm Your Email</title>
+                        </head>
+                        <body style=""font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 30px;"">
 
+                            <div style=""max-width: 600px; margin: auto; background-color: white; padding: 30px; border-radius: 10px;"">
+
+                                <h2 style=""text-align: center;"">Welcome to Library System 📚</h2>
+
+                                <p>Hello <strong>{user.FullName}</strong>,</p>
+
+                                <p>
+                                    Thank you for registering in our Library System.
+                                    Please confirm your email address to activate your account.
+                                </p>
+
+                                <div style=""text-align: center; margin: 30px 0;"">
+                                    <a href=""{cofirmationLink}""
+                                       style=""background-color: #007bff;
+                                              color: white;
+                                              padding: 12px 25px;
+                                              text-decoration: none;
+                                              border-radius: 6px;
+                                              display: inline-block;"">
+                                        Confirm Email
+                                    </a>
+                                </div>
+
+                                <p>
+                                    After confirming your email, you will be able to log in to your account.
+                                </p>
+
+                                <p style=""color: #777; font-size: 13px;"">
+                                    If you did not create this account, you can safely ignore this email.
+                                </p>
+
+                                <hr>
+
+                                <p style=""text-align: center; color: #999; font-size: 12px;"">
+                                    © 2026 Library System. All rights reserved.
+                                </p>
+
+                            </div>
+
+                        </body>
+                        </html>";
+
+                await _emailSender.SendEmailAsync(user.Email!, "Confirm Email ", emailBody);
+
+
+                //
                 await _dbContext.Members.AddAsync(member);
                 await _dbContext.SaveChangesAsync();
-                IList<string> roles =
-    await _userManager.GetRolesAsync(user);
 
-                JwtTokenResult jwt =
-                    GenerateJwtToken(user, roles);
+                //            IList<string> roles =
+                //await _userManager.GetRolesAsync(user);
+
+                //            JwtTokenResult jwt =
+                //                GenerateJwtToken(user, roles);
 
                 await transaction.CommitAsync();
 
                 return new AuthResponseDto
                 {
                     IsSuccess = true,
-                    Message = "Registration successful.",
-                    UserId = user.Id,
+                    Message = "Registration successful. Please check your email to confirm your account.",
                     FullName = user.FullName,
                     Email = user.Email,
                     UserName = user.UserName,
-                    Role = roles.FirstOrDefault(),
-                    AccessToken = jwt.AccessToken,
-                    ExpiresAt = jwt.ExpiresAt
+
                 };
 
             }
@@ -176,7 +247,7 @@ namespace LibrarySystem.BLL.Services.Classes
             }
         }
 
-        private JwtTokenResult GenerateJwtToken(ApplicationUser user,IList<string> roles)
+        private JwtTokenResult GenerateJwtToken(ApplicationUser user, IList<string> roles)
         {
             List<Claim> claims = new List<Claim>
               {
@@ -192,7 +263,7 @@ namespace LibrarySystem.BLL.Services.Classes
                     new Claim(ClaimTypes.Role, role));
             }
             SymmetricSecurityKey securityKey =
-        new SymmetricSecurityKey(
+             new SymmetricSecurityKey(
             Encoding.UTF8.GetBytes(_jwtSettings.Key));
 
             SigningCredentials signingCredentials =
@@ -213,7 +284,7 @@ namespace LibrarySystem.BLL.Services.Classes
            signingCredentials: signingCredentials);
 
             string accessToken =
-       new JwtSecurityTokenHandler()
+            new JwtSecurityTokenHandler()
            .WriteToken(jwtToken);
 
             return new JwtTokenResult
@@ -222,7 +293,101 @@ namespace LibrarySystem.BLL.Services.Classes
                 ExpiresAt = expiresAt
             };
         }
+        public async Task<AuthResponseDto> ConfirmEmailAsync(string userId, string token)
+        {
+            ApplicationUser? user = await _userManager.FindByIdAsync(userId);
+            if (user is null)
+            {
+                return new AuthResponseDto
+                {
+                    IsSuccess = false,
+                    Message = "User not found."
+                };
+            }
+            if (user.EmailConfirmed)
+            {
+                return new AuthResponseDto
+                {
+                    IsSuccess = true,
+                    Message = "Email is already confirmed."
+                };
+            }
+            IdentityResult result =
+                await _userManager.ConfirmEmailAsync(user, token);
+            if (!result.Succeeded)
+            {
+                return new AuthResponseDto
+                {
+                    IsSuccess = false,
+                    Message = string.Join(
+                        ", ",
+                        result.Errors.Select(error => error.Description))
+                };
+            }
+            return new AuthResponseDto
+            {
+                IsSuccess = true,
+                Message = "Email confirmed successfully."
+            };
+        }
 
+        public async Task<IdentityResponseDto> ForgetPasswordAsync(ForgotPasswordRequest request)
+        {
+            ApplicationUser? user = await _userManager.FindByEmailAsync(request.Email);
+            if (user is null)
+            {
+                return new IdentityResponseDto
+                {
+                    IsSuccess = false,
+                    Message = "If this email exists, a password reset link will be sent."
+                };
+            }
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+         
 
+            await _emailSender.SendEmailAsync(user.Email!, "Your password reset token is:", token);
+            return new IdentityResponseDto
+            {
+                IsSuccess = true,
+                Message = "If this email exists, a password reset link has been sent."
+            };
+        }
+
+        public async Task<IdentityResponseDto> ResetPasswordAsync(ResetPasswordRequest request)
+        {
+            if (request.NewPassword != request.ConfirmPassword)
+            {
+                return new IdentityResponseDto
+                {
+                    IsSuccess = false,
+                    Message = "Passwords do not match."
+                };
+            }
+
+            var user = await _userManager.FindByEmailAsync(request.Email);
+            if (user is null)
+            {
+                return new IdentityResponseDto
+                {
+                    IsSuccess = false,
+                    Message = "Invalid password reset request."
+                };
+            }
+            // we will not check if the token is valid here, because the UserManager will handle that for us.
+            var result = await _userManager.ResetPasswordAsync(user, request.Token, request.NewPassword);
+            if(!result.Succeeded)
+            {
+                return new IdentityResponseDto
+                {
+                    IsSuccess = false,
+                    Message = string.Join(", ", result.Errors.Select(e => e.Description))
+                };
+            }
+            return new IdentityResponseDto
+            {
+                IsSuccess = true,
+                Message = "Password has been reset successfully."
+            };
+        }
     }
 }

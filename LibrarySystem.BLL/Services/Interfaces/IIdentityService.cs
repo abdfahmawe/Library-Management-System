@@ -13,5 +13,11 @@ namespace LibrarySystem.BLL.Services.Interfaces
         Task<AuthResponseDto> RegisterAsync(RegisterRequestDto request);
 
         Task<AuthResponseDto> LoginAsync(LoginRequestDto request);
+        Task<AuthResponseDto> ConfirmEmailAsync(string userId, string token);
+
+        // Forget + Reset Password 
+
+        Task<IdentityResponseDto> ForgetPasswordAsync(ForgotPasswordRequest request);
+        Task<IdentityResponseDto> ResetPasswordAsync(ResetPasswordRequest request);
     }
 }

@@ -77,17 +77,9 @@ namespace LibrarySystem.PL
                             ClockSkew = TimeSpan.Zero
                         };
                 });
-            builder.Services.AddScoped<ILibraryItemRepository, LibraryItemRepository>();
-            builder.Services.AddScoped<IDataSeed, DataSeed>();
-            builder.Services.AddScoped<IIdentityService, IdentityService>();
-            builder.Services.AddScoped<ILibraryItemService, LibraryItemService>();
-            builder.Services.AddScoped<IMemberRepository, MemberRepository>();
-            builder.Services.AddScoped<IMemberService, MemberService>();
-            builder.Services.AddScoped<IMemberCatalogService, MemberCatalogService>();
-            builder.Services.AddScoped<IBorrowTransactionRepository, BorrowTransactionRepository>();
-            builder.Services.AddScoped<IBorrowingService, BorrowingService>();
-            builder.Services.AddScoped<IReportRepository, ReportRepository>();
-            builder.Services.AddScoped<IReportService, ReportService>();
+
+            builder.Services.AddConfig(builder.Configuration); // this call the etiontion method that do the Dependancy enjiction
+
             builder.Services.AddControllers();
             builder.Services.AddOpenApi();
 

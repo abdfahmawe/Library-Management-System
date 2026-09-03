@@ -15,7 +15,7 @@ namespace LibrarySystem.PL.Controllers
     {
         private readonly IIdentityService _identityService;
 
-        public AuthController(IIdentityService identityService)
+        public AuthController(IIdentityService identityService )
         {
             _identityService = identityService;
         }
@@ -70,5 +70,32 @@ namespace LibrarySystem.PL.Controllers
                 Message = "Welcome Member."
             });
         }
+        [HttpGet("confirm-email")]
+        public async Task<ActionResult<AuthResponseDto>> ConfirmEmail([FromQuery] string userId ,[FromQuery] string token)
+        {
+            AuthResponseDto result = await _identityService.ConfirmEmailAsync(userId, token);
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
+        [HttpPost("forget-password")]
+        public async Task<ActionResult<AuthResponseDto>> ForgetPassword(ForgotPasswordRequest request)
+        {
+            var result = await _identityService.ForgetPasswordAsync(request);
+            return Ok(result);
+        }
+        [HttpPost("reset-password")]
+        public async Task<ActionResult<AuthResponseDto>> ResetPassword([FromBody] ResetPasswordRequest request)
+        {
+            var result = await _identityService.ResetPasswordAsync(request);
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
+        
     }
 }

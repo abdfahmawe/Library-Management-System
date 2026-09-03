@@ -44,8 +44,11 @@ The system is designed around a clean **Layered Architecture** and provides sepa
   - `Admin`
   - `Member`
 - Protected API endpoints
-
----
+- Email Confirmation
+- Forgot Password
+- Password Reset
+- SMTP Email Integration
+- User Secrets for sensitive email configuration
 
 ## 🧠 Tech Stack
 
@@ -190,11 +193,13 @@ Base route:
 ```text
 /api/Auth
 ```
-
 | Method | Endpoint | Description | Access |
 |---|---|---|---|
-| `POST` | `/api/Auth/Register` | Register a new account | Public |
+| `POST` | `/api/Auth/Register` | Register a new account and send confirmation email | Public |
 | `POST` | `/api/Auth/Login` | Login and receive JWT | Public |
+| `GET` | `/api/Auth/confirm-email` | Confirm user email address | Public |
+| `POST` | `/api/Auth/forget-password` | Request a password reset token | Public |
+| `POST` | `/api/Auth/reset-password` | Reset password using the reset token | Public |
 | `GET` | `/api/Auth/test-auth` | Test authenticated access | Authenticated |
 | `GET` | `/api/Auth/admin-only` | Test Admin authorization | Admin |
 | `GET` | `/api/Auth/member-only` | Test Member authorization | Member |

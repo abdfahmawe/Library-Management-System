@@ -1,0 +1,8 @@
+**/bin/
+**/obj/
+.git/
+.vs/
+.vscode/
+*.user
+*.suo
+README.md
